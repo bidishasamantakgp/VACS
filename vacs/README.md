@@ -2,6 +2,7 @@
 
 ## Required packages
 - `tensorflow 1.13.*`
+- `numpy 1.16.*`
 
 ## Getting Started
 
