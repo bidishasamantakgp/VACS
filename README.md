@@ -18,8 +18,6 @@ The following directories provides scripts for VACS and baselines
 - `vacs` Code to train and sample synthetic text
 - `language_model` Code to train the language model
 
-## VACS Model (Present in the 'vacs' directory):
-- 
 ## Contact
 bidisha@iitkgp.ac.in
 sharmilanangi@gmail.com
