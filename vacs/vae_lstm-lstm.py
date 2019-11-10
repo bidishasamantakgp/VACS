@@ -201,8 +201,8 @@ def main(params):
 		kld_loss= -1*(neg_kld_zglobal + neg_kld_zsent)
 
 		anneal = tf.placeholder(tf.float64)
-		annealing=tf.to_float(anneal)
-		# annealing = (tf.tanh((tf.to_float(anneal) - 3500)/1000) + 1)/2
+		# annealing=tf.to_float(anneal)
+		annealing = (tf.tanh((tf.to_float(anneal) - 3500)/1000) + 1)/2
 		# overall loss reconstruction loss - kl_regularization
 		kl_term_weight=tf.multiply(tf.cast(annealing,dtype=tf.float64), tf.cast(kld_loss,dtype=tf.float64))
 
@@ -251,15 +251,11 @@ def main(params):
 			for variable in tf.trainable_variables():
 				# shape is an array of tf.Dimension
 				shape = variable.get_shape()
-				print(shape, variable.name)
-				#print(len(shape))
 				variable_parameters = 1
 				for dim in shape:
-					print(dim)
 					variable_parameters *= dim.value
-				print(variable_parameters, total_parameters)
 				total_parameters += variable_parameters
-			print(total_parameters)
+			print("Total Number of Parameters: ",total_parameters)
 			
 			# exit()
 			if params.debug:
@@ -302,31 +298,19 @@ def main(params):
 
 					feed = {word_inputs: sent_l_batch,label_inputs:label_l_batch ,d_word_inputs: sent_batch, 
 							d_label_inputs:label_batch, d_word_labels: sent_dec_l_batch, d_label_labels:label_l_batch,
-							seq_length: length_, d_seq_length: length_,anneal: params.anneal_value}
+							seq_length: length_, d_seq_length: length_,anneal: cur_it}  ##anneal: params.anneal_value -> For custom anneal value
 
-					# a,b=sess.run([w_masked_losses,w_mean_loss_by_example ],feed_dict=feed)
-					# z1a,z1b,z2a,z2b,z3a,z3b,kzg,kzs,tlb,wppl,lppl, klw,o=sess.run([Zsent_distribution[0],Zsent_distribution[1],Zglobal_distribition[0],Zglobal_distribition[1],Zglobal_dec_distribution[0],Zglobal_dec_distribution[1] ,neg_kld_zglobal,neg_kld_zsent,total_lower_bound,word_perplexity, label_perplexity,kl_term_weight, optimize],feed_dict=feed)
-					# print("============")
-					z1a,z1b,z3a,z3b,kzg,kzs,tlb,wppl,lppl, klw,o=sess.run([Zsent_distribution[0],Zsent_distribution[1],Zsent_dec_distribution[0],Zsent_dec_distribution[1],neg_kld_zglobal,neg_kld_zsent,total_lower_bound,word_perplexity, label_perplexity,kl_term_weight, optimize],feed_dict=feed)
+					
+					tlb,wppl,lppl, klw,o=sess.run([total_lower_bound,word_perplexity, label_perplexity,kl_term_weight, optimize],feed_dict=feed)
 
-					# print(c.shape)
-					# print(d.shape)
-					# print(c,d)
-					# print(e,f)
-					# print(d[69],d[119])
-					# print('zsent',z1a,z1b)
-					# # print('zglobal',z2a,z2b)
-					# print('zsent dec',z3a,z3b)
+					
 					if cur_it % 100 == 0 and cur_it != 0:
-						print("TotalLB after {} ({}) iterations (epoch): {} Neg_KLD_Zglobal: "
-							  "{} Neg_KLD_Zsent: {}".format(
-								  cur_it, e,tlb, kzg, kzs))
+						print("TotalLB after {} ({}) iterations (epoch): {} "
+							   .format(cur_it, e,tlb))
 						print("Word Perplexity: {}, Label Perplexity: {}".format(wppl,lppl))
 					
 					cur_it += 1
-					# iters.append(cur_it)
-					# tlb_arr.append(tlb)
-					# wppl_arr.append(wppl)
+					
 					total_tlb+=tlb
 					total_wppl+=wppl
 					total_klw+=klw
@@ -345,47 +329,6 @@ def main(params):
 						  e,avg_tlb, avg_wppl, avg_klw))
 				print("Word Perplexity: {}, Label Perplexity: {}".format(wppl,lppl))
 
-
-				iters.append(e)
-				tlb_arr.append(avg_tlb)
-				wppl_arr.append(avg_wppl)
-				klw_arr.append(avg_klw)
-
-
-			#Save the values and plot the graph
-			import matplotlib.pyplot as plt
-			plot_filename="./plot_values_"+str(params.anneal_value)+".txt"
-			with open(plot_filename, 'w') as wf:
-			   _ = [wf.write(str(s) + ' ')for s in iters]
-			   wf.write('\n')
-			   _ = [wf.write(str(s) + ' ')for s in tlb_arr]
-			   wf.write('\n')
-			   _ = [wf.write(str(s) + ' ') for s in wppl_arr]
-			   wf.write('\n')
-			   _ = [wf.write(str(s) + ' ') for s in klw_arr]
-
-
-			plt.subplot(3, 1, 1,title="Total Lower Bound vs Epochs")
-			plt.plot(iters, tlb_arr,color='blue', label='Total lower bound')
-			plt.xlabel('Epochs')
-			# plt.title('Lower bound and Word ppl vs iterations')
-			plt.ylabel('Total Lower Bound')
-
-			plt.subplot(3, 1, 2,title="Word Perplexity vs Epochs")
-			plt.plot(iters, wppl_arr,color='red', label='Word Perplexity')
-			plt.xlabel('Epochs')
-			plt.ylabel('Word Perplexity')
-
-			# plt.legend(bbox_to_anchor=(1.05, 1),
-			#			loc=1, borderaxespad=0.)
-
-			plt.subplot(3, 1, 3,title="KL Term Value vs Epochs")
-			plt.plot(iters, klw_arr,color='green', label='KL term Value')
-			plt.xlabel('Epochs')
-			plt.ylabel('KL term Value')
-
-			figure_name='./graph_'+str(params.anneal_value)+'.png'
-			plt.savefig(figure_name)			# plt.plot(iters, coeff, 'r--', label='annealing')
 
 
 if __name__=="__main__":

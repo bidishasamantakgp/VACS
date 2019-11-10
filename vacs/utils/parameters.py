@@ -2,14 +2,16 @@ class Parameters():
     # Parameters to change
     anneal_value=0.2
     num_epochs = 100
-    inp_folder_name = 'train_untrans_6k'
-    name="rVACS_kl"
+    inp_folder_name = 'real+parallel'
+    name="real_parallel"
 
 
     # Specify the sample size - for simple_sampling.py
     number_of_samples=200
     sample_sentences_file_name = "./r_VACS_kl_10k.txt"
     sample_labels_file_name ="./r_VACS_kl_10k_labels.txt"
+    gen_length = 40
+
 
     ### general parameters
     debug=True
@@ -19,7 +21,6 @@ class Parameters():
     batch_size = 50
     # for decoding
     temperature = 1.0
-    gen_length = 40
     # beam search
     beam_search = False
     beam_size = 2

@@ -45,16 +45,19 @@ The dataset folder should be located in `DATA` directory. The name of this folde
 `python vae_lstm-lstm.py`
 
 
-### KL Annealing
+###  Output Directories
 
-### Expected Output
-
+The following directories are created during the training process
+- `trained_embeddings_<name>` Stores the embeddings of the sentences and labels in a pickle file
+- `model_logs_<name>` All the event logs of the model are stored here
+- `model_ckpts_<name>` All the latest checkpoints of the trained model are stored here. A model checkpoint from here can be restored to a TF session if required.
 
 ## Sampling sentences
 
 ### Parameters
-Specify the `number_of_samples` , `sample_sentences_file_name` and `sample_labels_file_name` to specify the number of sentences to be sampled, the path to the sampled sentences and the labels of these sentences respectively.
 
+- Specify the `number_of_samples` , `sample_sentences_file_name` and `sample_labels_file_name` to specify the number of sentences to be sampled, the path to the sampled sentences and the labels of these sentences respectively.
+- `gen_length` Set the maximum length of the sentences you want to generate. The sentences are generated either till `<EOS>` token is generated  or till  `gen_length`.
 
 ### Restoring Model
 
@@ -65,6 +68,13 @@ We have to specify the model to be restored in the `simple_sampling.py` file. Th
 ```
 
 The `path` variable has to specify the path to the model checkpoint from where we want to sample the sentences.
+
+## Results and Analysis
+
+Run the following command to get Busrtiness, M-index and Span Entropy of the generated sentences.
+```
+python statistics.py <sample_sentences_file_name>
+```
 
 
 
