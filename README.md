@@ -6,8 +6,7 @@ paper:
 - `nltk`
 
 
-## Dataset
-- Please contact the authors
+
 
 ## Quick start
 
