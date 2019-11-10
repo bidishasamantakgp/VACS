@@ -109,13 +109,13 @@ def main(params):
             sess.run([tf.global_variables_initializer(),
                       tf.local_variables_initializer()])
             print("here")
+
+            ### Code to laod the pre trained model
+            ###Replace the model name to restore the specific model you want to sample the sentences
             try:
 
                 path="./models_ckpts_"+params.name+"/vae_lstm_model-11900"
-                # print(path)
-                # chkp.print_tensors_in_checkpoint_file(path, tensor_name='', all_tensors=True)
                 saver.restore(sess,path )
-            # saver.restore(sess, "./models_ckpts_1/vae_lstm_model-258600")
             except:
                 print("-----exception occurred--------")
                 exit()
@@ -140,11 +140,11 @@ def main(params):
             print(total_parameters)
 
             batch_size=1
-            # number_of_samples=params.number_of_samples
-            number_of_samples=10000
+            number_of_samples=params.number_of_samples
+            # number_of_samples=10000
             same_context_sentences=1
-            sentence_file="./r_VACS_kl_10k.txt"
-            labels_file="./r_VACS_kl_10k_labels.txt"
+            sentence_file=params.sample_sentences_file_name
+            labels_file=params.sample_labels_file_name
 
             f1=open(sentence_file,'w+')
             f2=open(labels_file,'w+')

@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 import collections
 from utils import parameters
-from fasttext import FastVector
+from utils.fasttext import FastVector
 
 params = parameters.Parameters()
 
@@ -15,7 +15,7 @@ params = parameters.Parameters()
 def ptb_data_read(corpus_file, sent_file):
     if os.path.exists(sent_file):
         print("Loading sentences file")
-        with open(sent_file, 'r') as rf:
+        with open(sent_file, 'rb') as rf:
             sentences = pickle.load(file=rf)
         return sentences
 
@@ -25,7 +25,7 @@ def ptb_data_read(corpus_file, sent_file):
     with open(corpus_file) as rf:
         for line in rf:
             sentences.append(['<BOS>'] + line.strip().split(' ') + ['<EOS>'])
-    with open(sent_file, 'w') as wf:
+    with open(sent_file, 'wb') as wf:
         pickle.dump(sentences, file=wf)
     return sentences
 
@@ -210,7 +210,7 @@ def train_w2vec(embed_fn, embed_size, w2vec_it=5, tokenize=True,
 
 def save_data(sentences, pkl_file,text_file):
     
-    with open(pkl_file, 'w') as wf:
+    with open(pkl_file, 'wb') as wf:
         pickle.dump(sentences, file=wf)
 
     with open(text_file, 'w') as wf:
@@ -235,12 +235,16 @@ def prepare_data(data_raw,labels_raw, params,data_path):
     filename=os.path.join(model_path, "embedding_file.pkl")
     
     if os.path.exists(filename):
-        with open(filename,'r') as rf:
+        with open(filename,'rb') as rf:
             embed_arr=pickle.load(rf)
 
     else:
-        hi_align_dictionary = FastVector(vector_file='/home/bidisha/sharmila/wiki.hi.align.vec')
-        en_align_dictionary = FastVector(vector_file='/home/bidisha/sharmila/wiki.en.align.vec')
+        dirname = os.path.dirname(__file__)
+        hi_align_vec_path = os.path.join(dirname, './../wiki.hi.align.vec')
+        en_align_vec_path = os.path.join(dirname, './../wiki.en.align.vec')
+
+        hi_align_dictionary = FastVector(vector_file=hi_align_vec_path)
+        en_align_dictionary = FastVector(vector_file=en_align_vec_path)
         print("loaded the files..")
 
         embed_arr = embed_arr = np.zeros([data_dict.vocab_size, params.embed_size])
@@ -283,7 +287,7 @@ def prepare_data(data_raw,labels_raw, params,data_path):
         if not os.path.exists(model_path):
             os.makedirs(model_path)
 
-        with open(filename,'w') as wf:
+        with open(filename,'wb') as wf:
             pickle.dump(embed_arr,wf)
 
 
@@ -333,7 +337,7 @@ def prepare_data(data_raw,labels_raw, params,data_path):
 
     # exit()
     filename=os.path.join(model_path, "data_dict.pkl")
-    with open(filename,'w') as wf:
+    with open(filename,'wb') as wf:
             pickle.dump(data_dict,wf)
     
     print("----Corpus_Information--- \n "

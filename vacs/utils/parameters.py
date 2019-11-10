@@ -1,11 +1,20 @@
 class Parameters():
-    # general parameters
+    # Parameters to change
     anneal_value=0.2
-    debug=True
-    name="rVACS_kl"
-    number_of_samples=200
-    latent_size = 10  # std=13, inputless_dec(dec_keep_rate=0.0)=111------------------------------>
     num_epochs = 100
+    inp_folder_name = 'train_untrans_6k'
+    name="rVACS_kl"
+
+
+    # Specify the sample size - for simple_sampling.py
+    number_of_samples=200
+    sample_sentences_file_name = "./r_VACS_kl_10k.txt"
+    sample_labels_file_name ="./r_VACS_kl_10k_labels.txt"
+
+    ### general parameters
+    debug=True
+    
+    latent_size = 10  # std=13, inputless_dec(dec_keep_rate=0.0)=111------------------------------>
     learning_rate = 0.001
     batch_size = 50
     # for decoding
