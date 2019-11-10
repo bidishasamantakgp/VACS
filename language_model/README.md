@@ -1,4 +1,4 @@
-# tf-lstm-char-cnn
+# Language Model Experiments
 
 The language model code for extrinsic evaluation of generated Code-Switched (gCS) sentences is done with the help of [tf-lstm-char-cnn](https://github.com/mkroutikov/tf-lstm-char-cnn). We train a LM on different combinations of monolingual and generated sentnces (please refer to paper for more details) and test them on real Code-Switched sentences. It is evaluated with `perplexity` scores. Lower perplexity means generated sentences are more similar to real code-switched sentences.
   
