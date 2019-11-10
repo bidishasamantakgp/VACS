@@ -29,7 +29,9 @@ curl -o wiki.hi.align.vec https://dl.fbaipublicfiles.com/fasttext/vectors-aligne
 
 The dataset folder should be located in `DATA` directory. The name of this folder should be specified as `inp_folder_name` in the `utils/parameters.py` The code requires 2 files in the dataset folder:
 - `data.txt` Contains the sentences on which the model can be trained on
-- `labels.txt` Contains the labels to the sentences in data.txt (We used 0 for english, 1 for hindi, 2 for numbers/symbols/other words)
+- `labels.txt` Contains the labels to the sentences in data.txt (We used 0 for english, 1 for hindi, 2 for numbers/symbols/other words)[
+
+[Click here](https://www.dropbox.com/s/3tkjobo8h2zupn8/Dataset_VACS.zip?dl=0) to download the dataset we used.
 
 
 ## Training the generative model
