@@ -44,6 +44,6 @@ We are publishing pre-trained model files to the following two Language Model ex
 
 The following ZIP folder contains pre-trained model and the the dataset used for the LM experiment. [Pre-trained model](https://www.dropbox.com/s/pid65mgu76vxxn1/LM_Experiments_model_data.zip?dl=0)
 
-This model was trained with the default parameters and acheved the accuracy of the published result.
+This model was trained with the default parameters and acheved the perplexity of the published result.
 
 
