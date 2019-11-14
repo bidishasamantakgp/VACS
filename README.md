@@ -1,6 +1,6 @@
 # A Deep Generative Model for Code-Switched Text
 
-Tensorflow implementation for [our paper](https://www.ijcai.org/proceedings/2019/0719.pdf
+Tensorflow implementation for [our paper](https://www.ijcai.org/proceedings/2019/0719.pdf)
 
 ## Required packages
 - `tensorflow 1.13.*`
